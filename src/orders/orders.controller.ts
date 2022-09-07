@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Patch } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { UpdateOrderDto } from './dtos/update-order.dto';
 
@@ -19,8 +19,7 @@ export class OrdersController {
 
     @Patch('/:customerId')
     updateOrderDetail(@Param('customerId') customerId: string ,@Body() body: UpdateOrderDto){
-        console.log(customerId, body);
-        
+
         return this.ordersService.update(customerId, body.customerName)
     }
 }
