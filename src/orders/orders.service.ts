@@ -10,11 +10,11 @@ export class OrdersService {
         return this.ordersRepo.findAll()
     }
 
-    findOne(customerId: string){
-        return this.ordersRepo.findOne(customerId)
+    findOne(orderNumber: string){
+        return this.ordersRepo.findOne(orderNumber)
     }
 
-    update(customerId: string, customerName: string){
-        this.ordersRepo.update(customerId, customerName)
+    update(orderNumber: string, customerName: string){
+        this.ordersRepo.update(orderNumber, customerName)
     }
 }

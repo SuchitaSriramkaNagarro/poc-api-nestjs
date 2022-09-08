@@ -14,14 +14,14 @@ export class OrdersController {
         return this.ordersService.findAll()
     }
 
-    @Get('/:customerId')
-    getOrderDetail(@Param('customerId') customerId: string){
-        return this.ordersService.findOne(customerId)
+    @Get('/:orderNumber')
+    getOrderDetail(@Param('orderNumber') orderNumber: string){
+        return this.ordersService.findOne(orderNumber)
     }
 
-    @Patch('/:customerId')
-    updateOrderDetail(@Param('customerId') customerId: string ,@Body() body: UpdateOrderDto){
+    @Patch('/:orderNumber')
+    updateOrderDetail(@Param('orderNumber') orderNumber: string ,@Body() body: UpdateOrderDto){
 
-        return this.ordersService.update(customerId, body.customerName)
+        return this.ordersService.update(orderNumber, body.customerName)
     }
 }
