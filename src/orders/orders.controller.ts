@@ -1,7 +1,6 @@
-import { Controller, Get, Body, Patch, Param } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, NotFoundException } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import {NotFoundException} from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { OrderEntity } from './entities/order.entity';
 
