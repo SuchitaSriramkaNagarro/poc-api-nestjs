@@ -1,43 +1,27 @@
-import { readFile, writeFile } from "fs/promises";
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Injectable()
-export class OrdersRepository{
-    
-    async findAll(){
-        try {
-            const contents = await readFile('orders.json', 'utf-8')
-            const orders = JSON.parse(contents)
-            return orders
-        } catch (error) {
-            throw new BadRequestException('Bad request')
-        }
-    }
+export class OrdersRepository {
 
-    async findOne(orderNumber: string){
-        try {
-            const contents = await readFile('orders.json', 'utf-8')
-            const orders = JSON.parse(contents)
-            const singleOrder = orders.find((order) => order.orderNumber === orderNumber)
-            
-            if(!singleOrder){
-                throw new Error()
-            }
-            return singleOrder
-        } catch (error) {
-            throw new NotFoundException(`No order with customer id ${orderNumber}`)
-        }
-    }
+    constructor(private prisma: PrismaService){}
 
-    async update(orderNumber: string, customerName: string){
-        const contents = await readFile('orders.json', 'utf-8')
-        const orders = JSON.parse(contents)
-        const newOrders = orders.map((order)=>{
-            if(order.orderNumber === orderNumber){
-                return {...order, customerName}
-            }
-            return order
-        })
-        await writeFile('orders.json', JSON.stringify(newOrders))
-    }
+  findAll() {
+    return this.prisma.order.findMany();
+  }
+
+  async findOne(orderNumber: string) {
+    return this.prisma.order.findUnique({
+        where:{orderNumber}
+    });
+  }
+
+  update(orderNumber: string, updateOrderDto: UpdateOrderDto) {
+    return this.prisma.order.update({
+        where: {orderNumber},
+        data: updateOrderDto
+    });
+  }
+
 }

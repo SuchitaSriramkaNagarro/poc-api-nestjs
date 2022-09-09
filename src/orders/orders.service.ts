@@ -1,20 +1,25 @@
 import { Injectable } from '@nestjs/common';
+import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrdersRepository } from './orders.repository';
 
 @Injectable()
 export class OrdersService {
 
-    constructor(private ordersRepo: OrdersRepository){}
+  constructor(private ordersRepo: OrdersRepository){}
 
-    findAll(){
-        return this.ordersRepo.findAll()
-    }
+  findAll() {
+    return this.ordersRepo.findAll();
+  }
 
-    findOne(orderNumber: string){
-        return this.ordersRepo.findOne(orderNumber)
-    }
+  async findOne(orderNumber: string) {
+    return this.ordersRepo.findOne(orderNumber);
+  }
 
-    update(orderNumber: string, customerName: string){
-        this.ordersRepo.update(orderNumber, customerName)
-    }
+  async update(orderNumber: string, updateOrderDto: UpdateOrderDto) {
+    const order = await this.ordersRepo.findOne(orderNumber)
+    const newOrder = {...order,...updateOrderDto}
+    
+    return this.ordersRepo.update(orderNumber, newOrder);
+  }
+
 }
