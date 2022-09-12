@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Patch, Param, UseFilters } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, UseFilters, NotFoundException } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { ApiNotFoundResponse, ApiOkResponse, ApiTags, ApiBadRequestResponse, ApiGatewayTimeoutResponse, ApiServiceUnavailableResponse } from '@nestjs/swagger';
@@ -26,9 +26,9 @@ export class OrdersController {
   @ApiServiceUnavailableResponse({description: `Service unavailable`})
   async findOne(@Param('orderNumber') orderNumber: string) {
     const order = await this.ordersService.findOne(orderNumber);
-    // if(!order){
-    //   throw new NotFoundException(`Could not find order with ${orderNumber}.`)
-    // }
+    if(!order){
+      throw new NotFoundException(`Could not find order with ${orderNumber}.`)
+    }
     return order;
   }
 
